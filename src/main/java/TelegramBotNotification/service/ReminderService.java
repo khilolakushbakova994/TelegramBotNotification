@@ -33,11 +33,16 @@ public class ReminderService {
     @Scheduled(cron = "0 0/1 * * * *")
     public void checkRemindersInCurrentMinute() {
         LocalDateTime currentMinute = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        if (reminderRepository != null) {
         List<Reminder> reminders = reminderRepository.findRemindersByDateTime(currentMinute);
+        if (reminderRepository != null) {
 
-        for (Reminder reminder : reminders) {
-            System.out.println("Напомнить: " + reminder.getReminderText());
-
+            for (Reminder reminder : reminders) {
+                System.out.println("Напомнить: " + reminder.getReminderText());
+            }
+        }else {
+            System.out.println("Нет напоминаний в текущую минуту.");
+        }
         }
     }
 }

@@ -6,38 +6,31 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 @Component
 @Service
+@Slf4j
 public class TelegramBotUpdatesListener implements UpdatesListener {
-
-    private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     @Autowired
     private TelegramBot telegramBot;
     @Autowired
     private NotificationTaskRepository taskRepository;
 
-    @PostConstruct
-    public void init() {
-        telegramBot.setUpdatesListener(this);
-    }
-
     @Override
     public int process(List<com.pengrad.telegrambot.model.Update> updates) {
         updates.forEach(update -> {
-            logger.info("Processing update: {}", update);
+            log.info("Processing update: {}", update);
             if (update.message() != null && update.message().text() != null && update.message().text().equals("/start")) {
                 long chatId = update.message().chat().id();
-                telegramBot.execute(new SendMessage(chatId, "Привет! Я бот-напоминалка :), рад приветствовать тебя!"));
+                SendMessage message = new SendMessage(chatId, "Привет! Я бот-напоминалка :), рад приветствовать тебя!");
+                telegramBot.execute(message);
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
