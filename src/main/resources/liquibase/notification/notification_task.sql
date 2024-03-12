@@ -3,9 +3,10 @@
 -- changeset myUser:1
 CREATE TABLE notification_task
 (
-id REAL PRIMARY KEY,
-chatId TEXT,
-messageText TEXT);
+id BIGINT PRIMARY KEY,
+chat_id TEXT,
+message_Text TEXT,
+notification_date_time TIMESTAMP);
 
 -- changeset myUser:2
 
